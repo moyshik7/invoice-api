@@ -1,4 +1,4 @@
-# TaxAdda Frontend Assignment
+# TaxAdda Backend Assignment
 
 As part of our application process, we'd like to see what you can produce by giving you a small assignment. It should take you no more than a few hours to complete the assignment, but any extra polish or features you might want to put in will not go unnoticed.
 
