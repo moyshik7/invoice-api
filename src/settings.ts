@@ -1,12 +1,14 @@
+import * as dotenv from 'dotenv'
 
+dotenv.config({ path: './../.env' })
 /**
-  * Currently I'll test on my local server on my rpi
+  * The mongodb url
  */
-export const DB_URL = "https://10.134.181.13627017/"
+export const DB_URL = process.env.DB_URL || ""
 /**
  * The name of the database
  */
-export const DB_NAME = "Invoice"
+export const DB_NAME = process.env.DB_NAME || "Invoice"
 /**
  * The port the server will listen to
  */
