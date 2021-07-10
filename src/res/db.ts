@@ -19,7 +19,7 @@ export class Database {
      * Using it because constructor can't be async 
      * @returns Promise<Database> 
      */
-    static async connect(__uri: string, __dbName: string): Promise<Database> {
+    static async connect(_uri: string, __dbName: string): Promise<Database> {
         /**
          * Returning a new promise. 
          * It'll be resolved with a Database instance or rejected 
@@ -28,7 +28,7 @@ export class Database {
             /**
              * Creating a mongodb client 
              */
-            const client = new MongoClient(`${__uri}${__dbName}`, {
+            const client = new MongoClient(`${_uri}${__dbName}`, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true
             })
