@@ -14,6 +14,8 @@ import { DB_URL, DB_NAME, PORT } from './settings'
 
 const app = new express()
 app.use(cors())
+app.use(express.json())
+
 app.all('/', (req ?: Request, res ?: Response): void => {
     res.send(`Nothing to see here`)
 })
