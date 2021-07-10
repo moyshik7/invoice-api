@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/moyshik7/backend-assignment/issues"
   },
-  "homepage": "https://github.com/moyshik7/backend-assignment#readme"
+  "homepage": "https://github.com/moyshik7/backend-assignment#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "md5": "^2.3.0",
+    "mongodb": "^3.6.10"
+  }
 }
