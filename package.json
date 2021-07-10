@@ -2,8 +2,9 @@
   "name": "invoice-api",
   "version": "0.0.1",
   "description": "An invoice app for maintaining line items, work hours, pay hours, due dates etc",
-  "main": "main.js",
+  "main": "./build/main.js",
   "scripts": {
+    "start": "tsc && node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,5 +26,11 @@
     "express": "^4.17.1",
     "md5": "^2.3.0",
     "mongodb": "^3.6.10"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
+    "eslint": "^7.30.0",
+    "typescript": "^4.3.5"
   }
 }
