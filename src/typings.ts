@@ -68,3 +68,81 @@ export interface Invoice {
    */
   group ?: Array<Snowflake>;
 }
+/**
+ * Default user 
+ * Password is protected by hashing and salting 
+ * UserID is a combination of Joined Time Integer and username 
+ */
+export interface User {
+  /**
+   * User's unique id (randomly generated) 
+   * unique
+   */
+  id: Snowflake;
+  /**
+   * username of user 
+   * unique
+   */
+  username: string;
+  /**
+   * Actual name of user
+   */
+  name: string;
+  /**
+   * Roles of the user
+   * array of role IDs
+   */
+  roles: Array<Snowflake>;
+  /**
+   * When the user joined
+   */
+  joined: TimeInteger;
+  /**
+   * If the user is an admin
+   * Only admins can create and edit invoices
+   */
+  admin: boolean;
+  /**
+   * md5 encrypted + salted password hash
+   */
+  password: Hash;
+}
+/**
+ * Default interface for storing tokens 
+ * Tokens are mix of md5 hash and base64 encoded random texts saved in user' browser 
+ */
+export interface Tokens {
+  /**
+   * The actual token 
+   * unique
+   */
+  value: string;
+  /**
+   * Which user this token applies to 
+   */
+  user: Snowflake;
+  /**
+   * How long is the token valid 
+   * ms from 1970
+   */
+  validTill: TimeInteger;
+}
+/**
+ * Default role interface 
+ * Roles can be assigned to users 
+ * Not useful now but might come handy later 
+ */
+export interface Role {
+  /**
+   * ID of the role
+   */
+  id: Snowflake;
+  /**
+   * Name of the role 
+   */
+  name: string;
+  /**
+   * Array of permission Integers
+   */
+  permissions: Array<number>;
+}
