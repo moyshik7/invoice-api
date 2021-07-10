@@ -11,6 +11,10 @@ export type TimeInteger = number
  */
 export type Snowflake = string
 /**
+ * Encrypted version of orginal password or string 
+ */
+export type Hash = string
+/**
  * Default interface of an invoice 
  */
 export interface Invoice {
