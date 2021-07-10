@@ -1,0 +1,24 @@
+{
+  "name": "invoice-api",
+  "version": "0.0.1",
+  "description": "An invoice app for maintaining line items, work hours, pay hours, due dates etc",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moyshik7/backend-assignment.git"
+  },
+  "keywords": [
+    "invoice",
+    "api",
+    "rest"
+  ],
+  "author": "moyshik7",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/moyshik7/backend-assignment/issues"
+  },
+  "homepage": "https://github.com/moyshik7/backend-assignment#readme"
+}
