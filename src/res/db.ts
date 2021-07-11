@@ -61,6 +61,9 @@ export class Database {
             .catch(reject)
         })
     }
+    async UpdateUserData(_id: Snowflake, _update: any): Promise<void> {
+        //
+    }
     async GetUserByID(_id: Snowflake): Promise<User | null> {
         return new Promise ((resolve: (_user: User | null) => void, reject: (err: any) => void) => {
             if(!_id){
@@ -71,7 +74,7 @@ export class Database {
             }, {
                 projection: {
                     _id: 0
-		    }})
+                }})
             .sort({ id: 1 })
             .limit(1)
             .toArray()
@@ -255,11 +258,25 @@ export class Database {
                 reject("Provide a valid invoice id")
             }
             this.db.collection("Invoice").insertOne(_invoice).then((): void => {
-		        resolve(_invoice)
-	        }).catch(reject)
+                resolve(_invoice)
+            }).catch(reject)
         })
     }
     async UpdateInvoice(_id: Snowflake, _update: any): Promise<void> {
-        //
+        return new Promise ((resolve: () => void, reject: (err: any) => void) => {
+            if(!_id){
+                reject("Provide a valid invoice id");
+            }
+            if(!_update){
+                reject("Provide what to edit / change")
+            }
+            this.db.collection("Invoice").updateOne({
+                id: _id
+            }, {
+                $set: _update
+            }).then((): void => {
+                resolve()
+            }).catch(reject)
+        })
     }
 }
