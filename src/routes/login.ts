@@ -2,7 +2,21 @@ import { Request, Response } from 'express'
 import { Router } from 'express'
 
 const route = new Router()
+/*
 
+
+
+
+
+Do
+It 
+Later
+
+
+
+
+
+*/
 route.post('/', (req: Request, res: Response): void => {
     if(!req.body.username && !req.body.email){
         const error = {

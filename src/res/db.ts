@@ -120,7 +120,17 @@ export class Database {
         })
     }
     async CreateNewUser(_userData: User): Promise<User> {
-        //
+        return new Promise ((resolve: (_inv: Tokens) => void, reject: (err: any) => void) => {
+            if(!_userData){
+                reject("Provide a valid user data");
+            }
+            if(!_userData.id){
+                reject("Provide a valid user ID")
+            }
+            this.db.collection("Users").insertOne(_userData).then((): void => {
+		        resolve(_userData)
+	        }).catch(reject)
+        })
     }
     async GetUserByToken(_token: string): Promise<Snowflake | null> {
         return new Promise ((resolve: (_user: Snowflake | null) => void, reject: (err: any) => void) => {
@@ -164,7 +174,7 @@ export class Database {
             } else {
                 _exp = _expires
             }
-            let token: Tokens;
+            const token: Tokens;
             token = {
                 token: _token,
                 user: _uID,
@@ -219,7 +229,7 @@ export class Database {
 	        }).catch(reject)
         })
     }
-    async GetIncompleteInvoices(_uID): Promise< Invoice[] | any[] > {
+    async GetIncompleteInvoices(_uID: Snowflake): Promise< Invoice[] | any[] > {
         return new Promise ((resolve: (_inv: Invoice[] | any[]) => void, reject: (err: any) => void) => {
             if(!_uID){
                 reject("Provide a valid user ID");
