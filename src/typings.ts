@@ -125,7 +125,7 @@ export interface Tokens {
    * The actual token 
    * unique
    */
-  value: string;
+  token: string;
   /**
    * Which user this token applies to 
    */
@@ -134,7 +134,7 @@ export interface Tokens {
    * How long is the token valid 
    * ms from 1970
    */
-  validTill: TimeInteger;
+  expires: TimeInteger;
 }
 /**
  * Default role interface 

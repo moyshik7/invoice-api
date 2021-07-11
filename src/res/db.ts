@@ -146,7 +146,34 @@ export class Database {
         })
     }
     async CreateNewToken(_uID: Snowflake, _token: string, _expires?: TimeInteger): Promise<Tokens> {
-        //
+        return new Promise ((resolve: (_inv: Tokens) => void, reject: (err: any) => void) => {
+            if(!_uID){
+                reject("Provide a valid user ID");
+            }
+            if(!_token){
+                reject("Provide a valid token")
+            }
+            let _exp;
+            if(!_expires){
+                let __d = Date.now()
+                /**
+                 * By default it expires in a week 
+                 */
+                __d += 7*24*60*60*1000
+                _exp = __d
+            } else {
+                _exp = _expires
+            }
+            let token: Tokens;
+            token = {
+                token: _token,
+                user: _uID,
+                expires: _exp
+            }
+            this.db.collection("Tokens").insertOne(token).then((): void => {
+		        resolve(token)
+	        }).catch(reject)
+        })
     }
     async GetInvoiceByUser(_uID: Snowflake, _limit?: number): Promise<Invoice[] | any[]> {
         return new Promise ((resolve: (_inv: Invoice[] | any[]) => void, reject: (err: any) => void) => {
