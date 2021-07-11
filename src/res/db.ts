@@ -61,8 +61,22 @@ export class Database {
             .catch(reject)
         })
     }
-    async UpdateUserData(_id: Snowflake, _update: any): Promise<void> {
-        //
+    async UpdateUser(_id: Snowflake, _update: any): Promise<void> {
+        return new Promise ((resolve: () => void, reject: (err: any) => void) => {
+            if(!_id){
+                reject("Provide a valid user id");
+            }
+            if(!_update){
+                reject("Provide what to edit / change")
+            }
+            this.db.collection("Users").updateOne({
+                id: _id
+            }, {
+                $set: _update
+            }).then((): void => {
+                resolve()
+            }).catch(reject)
+        })
     }
     async GetUserByID(_id: Snowflake): Promise<User | null> {
         return new Promise ((resolve: (_user: User | null) => void, reject: (err: any) => void) => {
