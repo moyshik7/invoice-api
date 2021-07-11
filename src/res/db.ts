@@ -184,7 +184,7 @@ export class Database {
             if(!_limit){
                 lim = 20
             } else {
-                lim = 20
+                lim = _limit
             }
             this.db.collection("Invoice").find({
                 user: _uID
@@ -220,7 +220,29 @@ export class Database {
         })
     }
     async GetIncompleteInvoices(_uID): Promise< Invoice[] | any[] > {
-        //
+        return new Promise ((resolve: (_inv: Invoice[] | any[]) => void, reject: (err: any) => void) => {
+            if(!_uID){
+                reject("Provide a valid user ID");
+            }
+            let lim;
+            if(!_limit){
+                lim = 20
+            } else {
+                lim = _limit
+            }
+            this.db.collection("Invoice").find({
+                user: _uID
+            }, {
+                projection: {
+                    _id: 0
+		    }})
+            .sort({ id: 1 })
+            .limit(lim)
+            .toArray()
+		    .then((res: Array<Invoice>): void => {
+		        resolve(res)
+	        }).catch(reject)
+        })
     }
     async CreateNewInvoice(_invoice: Invoice): Promise<Invoice> {
         //
