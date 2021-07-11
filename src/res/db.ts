@@ -80,7 +80,7 @@ export class Database {
         })
     }
     
-    static async GetUserByUsername(_uName: string): Promise<User | null> {
+    async GetUserByUsername(_uName: string): Promise<User | null> {
         return new Promise ((resolve: (_user: User | null) => void, reject: (err: any) => void) => {
             if(!_uName){
                 reject("Provide a valid Username");
@@ -98,7 +98,7 @@ export class Database {
 	        }).catch(reject)
         })
     }
-    static async GetUserByEmail(_email: string): Promise<User | null> {
+    async GetUserByEmail(_email: string): Promise<User | null> {
         return new Promise ((resolve: (_user: User | null) => void, reject: (err: any) => void) => {
             if(!_email){
                 reject("Provide a valid Email");
@@ -116,10 +116,10 @@ export class Database {
 	        }).catch(reject)
         })
     }
-    static async CreateNewUser(_userData: User): Promise<User> {
+    async CreateNewUser(_userData: User): Promise<User> {
         //
     }
-    static async GetUserByToken(_token: string): Promise<Snowflake | null> {
+    async GetUserByToken(_token: string): Promise<Snowflake | null> {
         return new Promise ((resolve: (_user: Snowflake | null) => void, reject: (err: any) => void) => {
             if(!_token){
                 reject("Provide a valid token");
@@ -141,22 +141,22 @@ export class Database {
 	        }).catch(reject)
         })
     }
-    static async CreateNewToken(_uID: Snowflake, _token: string, _expires?: TimeInteger): Promise<Tokens> {
+    async CreateNewToken(_uID: Snowflake, _token: string, _expires?: TimeInteger): Promise<Tokens> {
         //
     }
-    static async GetInvoiceByUser(_uID: Snowflake): Promise<Invoice[] | any[]> {
+    async GetInvoiceByUser(_uID: Snowflake): Promise<Invoice[] | any[]> {
         //
     }
-    static async GetInvoiceByID(_id: string): Promise<Invoice | null> {
+    async GetInvoiceByID(_id: string): Promise<Invoice | null> {
         //
     }
-    static async GetIncompleteInvoices(_uID): Promise< Invoice[] | any[] > {
+    async GetIncompleteInvoices(_uID): Promise< Invoice[] | any[] > {
         //
     }
-    static async CreateNewInvoice(_invoice: Invoice): Promise<Invoice> {
+    async CreateNewInvoice(_invoice: Invoice): Promise<Invoice> {
         //
     }
-    static async UpdateInvoice(_id: Snowflake, _update: any): Promise<void> {
+    async UpdateInvoice(_id: Snowflake, _update: any): Promise<void> {
         //
     }
 }
