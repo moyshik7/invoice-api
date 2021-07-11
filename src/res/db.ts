@@ -120,7 +120,7 @@ export class Database {
         })
     }
     async CreateNewUser(_userData: User): Promise<User> {
-        return new Promise ((resolve: (_inv: Tokens) => void, reject: (err: any) => void) => {
+        return new Promise ((resolve: (_inv: User) => void, reject: (err: any) => void) => {
             if(!_userData){
                 reject("Provide a valid user data");
             }
@@ -174,8 +174,7 @@ export class Database {
             } else {
                 _exp = _expires
             }
-            const token: Tokens;
-            token = {
+            const token: Tokens = {
                 token: _token,
                 user: _uID,
                 expires: _exp
@@ -234,12 +233,6 @@ export class Database {
             if(!_uID){
                 reject("Provide a valid user ID");
             }
-            let lim;
-            if(!_limit){
-                lim = 20
-            } else {
-                lim = _limit
-            }
             this.db.collection("Invoice").find({
                 user: _uID
             }, {
@@ -247,7 +240,6 @@ export class Database {
                     _id: 0
 		    }})
             .sort({ id: 1 })
-            .limit(lim)
             .toArray()
 		    .then((res: Array<Invoice>): void => {
 		        resolve(res)
@@ -255,7 +247,17 @@ export class Database {
         })
     }
     async CreateNewInvoice(_invoice: Invoice): Promise<Invoice> {
-        //
+        return new Promise ((resolve: (_inv: Invoice) => void, reject: (err: any) => void) => {
+            if(!_invoice){
+                reject("Provide a valid invoice");
+            }
+            if(!_invoice.id){
+                reject("Provide a valid invoice id")
+            }
+            this.db.collection("Invoice").insertOne(_invoice).then((): void => {
+		        resolve(_invoice)
+	        }).catch(reject)
+        })
     }
     async UpdateInvoice(_id: Snowflake, _update: any): Promise<void> {
         //
