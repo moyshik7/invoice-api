@@ -73,6 +73,7 @@ export class Database {
                     _id: 0
 		    }})
             .sort({ id: 1 })
+            .limit(1)
             .toArray()
 		    .then((res: Array<User>): void => {
 		        resolve(res[0])
@@ -92,6 +93,7 @@ export class Database {
                     _id: 0
 		    }})
             .sort({ username: 1 })
+            .limit(1)
             .toArray()
 		    .then((res: Array<User>): void => {
 		        resolve(res[0])
@@ -110,6 +112,7 @@ export class Database {
                     _id: 0
 		    }})
             .sort({ email: 1 })
+            .limit(1)
             .toArray()
 		    .then((res: Array<User>): void => {
 		        resolve(res[0])
@@ -131,6 +134,7 @@ export class Database {
                     _id: 0
 		    }})
             .sort({ token: 1 })
+            .limit(1)
             .toArray()
 		    .then((res: Array<Tokens>): void => {
 		        if(!res[0]){
@@ -144,11 +148,49 @@ export class Database {
     async CreateNewToken(_uID: Snowflake, _token: string, _expires?: TimeInteger): Promise<Tokens> {
         //
     }
-    async GetInvoiceByUser(_uID: Snowflake): Promise<Invoice[] | any[]> {
-        //
+    async GetInvoiceByUser(_uID: Snowflake, _limit?: number): Promise<Invoice[] | any[]> {
+        return new Promise ((resolve: (_inv: Invoice[] | any[]) => void, reject: (err: any) => void) => {
+            if(!_uID){
+                reject("Provide a valid user ID");
+            }
+            let lim;
+            if(!_limit){
+                lim = 20
+            } else {
+                lim = 20
+            }
+            this.db.collection("Invoice").find({
+                user: _uID
+            }, {
+                projection: {
+                    _id: 0
+		    }})
+            .sort({ id: 1 })
+            .limit(lim)
+            .toArray()
+		    .then((res: Array<Invoice>): void => {
+		        resolve(res)
+	        }).catch(reject)
+        })
     }
     async GetInvoiceByID(_id: string): Promise<Invoice | null> {
-        //
+        return new Promise ((resolve: (_inv: Invoice | null) => void, reject: (err: any) => void) => {
+            if(!_id){
+                reject("Provide a valid Invoice ID");
+            }
+            this.db.collection("Invoice").find({
+                id: _id
+            }, {
+                projection: {
+                    _id: 0
+		    }})
+            .sort({ id: 1 })
+            .limit(1)
+            .toArray()
+		    .then((res: Array<Invoice>): void => {
+		        resolve(res[0])
+	        }).catch(reject)
+        })
     }
     async GetIncompleteInvoices(_uID): Promise< Invoice[] | any[] > {
         //

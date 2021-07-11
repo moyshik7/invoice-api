@@ -35,7 +35,7 @@ export interface Invoice {
    * User ID of the person the Invoice is assigned to / who'll pay 
    * This person will receive the alert
    */
-  assignedTo: Snowflake;
+  user: Snowflake;
   /**
    * Who to pay for the invoice
    */
