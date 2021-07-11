@@ -16,10 +16,20 @@ import { MongoClient } from 'mongodb'
  * It'll create a new instance of the original class and return it 
  */
 export class Database {
-    private dbName: string;
+    /**
+     * The name of the database 
+     */
+    private readonly dbName: string;
+    /**
+     * The database object 
+     * type is mongodb Database 
+     */
     private db: Db;
     
     constructor(_db: Db, _dbName: string){
+        /**
+         * Set the values 
+         */
         this.db = _db
         this.dbName = _dbName;
     }
@@ -61,62 +71,169 @@ export class Database {
             .catch(reject)
         })
     }
+    /** 
+     * Used for updating any user's data 
+     * eg name, email etc 
+     */
     async UpdateUser(_id: Snowflake, _update: any): Promise<void> {
+        /**
+         * Return a new promise with a void return type 
+         */
         return new Promise ((resolve: () => void, reject: (err: any) => void) => {
+            /** 
+             * If there's no id then stop the promise 
+             */
             if(!_id){
                 reject("Provide a valid user id");
             }
+            /**
+             * If no _update then stop the function 
+             */
             if(!_update){
                 reject("Provide what to edit / change")
             }
+            if(_update.id || _update.username){
+                reject ("Can't change the username or id")
+            }
+            /** 
+             * Updating the user based on query 
+             */
             this.db.collection("Users").updateOne({
+                /**
+                 * querying based on the user id 
+                 */
                 id: _id
             }, {
+                /**
+                 * Set the changes 
+                 */
                 $set: _update
             }).then((): void => {
+                /** 
+                 * after the changes have been done 
+                 */
                 resolve()
-            }).catch(reject)
+            })
+            /**
+             * In case any errors occurred 
+             */
+            .catch(reject)
         })
     }
+    /**
+     * Get user with the provided id 
+     */
     async GetUserByID(_id: Snowflake): Promise<User | null> {
         return new Promise ((resolve: (_user: User | null) => void, reject: (err: any) => void) => {
+            /**
+             * If no id provided then stop the execution 
+             */
             if(!_id){
                 reject("Provide a valid User ID");
             }
+            /**
+             * Select collection Users and run the query 
+             */
             this.db.collection("Users").find({
+                /**
+                 * where id is the provided id 
+                 */
                 id: _id
             }, {
+                /**
+                 * We don't need the _id field 
+                 */
                 projection: {
                     _id: 0
                 }})
+            /**
+             * Sorting based on id 
+             */
             .sort({ id: 1 })
+            /**
+             * We need only one Database 
+             */
             .limit(1)
             .toArray()
+            /**
+             * It should return an array of Users 
+             * resolving the first element of the array 
+             */
 		    .then((res: Array<User>): void => {
 		        resolve(res[0])
-	        }).catch(reject)
+	        })
+	        /**
+	         * If any error occurred 
+	         */
+	        .catch(reject)
         })
     }
-    
+    /**
+     * Get user from provided username 
+     */
     async GetUserByUsername(_uName: string): Promise<User | null> {
         return new Promise ((resolve: (_user: User | null) => void, reject: (err: any) => void) => {
+            /**
+             * If no username provided then stop the execution 
+             */
             if(!_uName){
                 reject("Provide a valid Username");
             }
+            /**
+             * Select the collection and run the find query 
+             */
             this.db.collection("Users").find({
+                /**
+                 * If the username is the actual username 
+                 */
                 username: _uName
             }, {
+                /**
+                 * We don't need the _id thing 
+                 */
                 projection: {
                     _id: 0
 		    }})
             .sort({ username: 1 })
+            /**
+             * We only want one document 
+             */
             .limit(1)
+            /**
+             * Converting to an array 
+             */
             .toArray()
+            /**
+             * It should return an array of Users 
+             */
 		    .then((res: Array<User>): void => {
+		        /**
+		         * Resolve the result 
+		         */
 		        resolve(res[0])
-	        }).catch(reject)
+	        })
+	        /**
+	         * In case any error occurred 
+	         */
+	        .catch(reject)
         })
     }
+    /**
+     * 
+     * 
+     * I can't comment anymore 
+     * It's too much work 
+     * I don't have time for this 
+     * I'm gonna comment it later 
+     * 
+     * 
+     * 
+     * 
+     * 
+     */
+    /**
+     * Get user with provided email 
+     */
     async GetUserByEmail(_email: string): Promise<User | null> {
         return new Promise ((resolve: (_user: User | null) => void, reject: (err: any) => void) => {
             if(!_email){
@@ -136,6 +253,9 @@ export class Database {
 	        }).catch(reject)
         })
     }
+    /**
+     * Register new user 
+     */
     async CreateNewUser(_userData: User): Promise<User> {
         return new Promise ((resolve: (_inv: User) => void, reject: (err: any) => void) => {
             if(!_userData){
@@ -149,6 +269,9 @@ export class Database {
 	        }).catch(reject)
         })
     }
+    /**
+     * Get user id with the provided token 
+     */
     async GetUserByToken(_token: string): Promise<Snowflake | null> {
         return new Promise ((resolve: (_user: Snowflake | null) => void, reject: (err: any) => void) => {
             if(!_token){
@@ -172,6 +295,10 @@ export class Database {
 	        }).catch(reject)
         })
     }
+    /**
+     * Create a new token 
+     * Basically when someone signs up for the first time 
+     */
     async CreateNewToken(_uID: Snowflake, _token: string, _expires?: TimeInteger): Promise<Tokens> {
         return new Promise ((resolve: (_inv: Tokens) => void, reject: (err: any) => void) => {
             if(!_uID){
@@ -180,8 +307,14 @@ export class Database {
             if(!_token){
                 reject("Provide a valid token")
             }
-            let _exp;
+            let _exp: TimeInteger;
+            /**
+             * if no expiration date provided set it to a week 
+             */
             if(!_expires){
+                /**
+                 * Current TimeInteger 
+                 */
                 let __d = Date.now()
                 /**
                  * By default it expires in a week 
@@ -189,27 +322,45 @@ export class Database {
                 __d += 7*24*60*60*1000
                 _exp = __d
             } else {
+                /**
+                 * else set the provided expiration date 
+                 */
                 _exp = _expires
             }
+            /**
+             * The token object that'll be saved 
+             */
             const token: Tokens = {
                 token: _token,
                 user: _uID,
                 expires: _exp
             }
+            /**
+             * Select Tokens collection and save the data 
+             */
             this.db.collection("Tokens").insertOne(token).then((): void => {
 		        resolve(token)
 	        }).catch(reject)
         })
     }
+    /**
+     * Get all invoices of a user 
+     */
     async GetInvoiceByUser(_uID: Snowflake, _limit?: number): Promise<Invoice[] | any[]> {
         return new Promise ((resolve: (_inv: Invoice[] | any[]) => void, reject: (err: any) => void) => {
             if(!_uID){
                 reject("Provide a valid user ID");
             }
-            let lim;
+            let lim: number;
+            /**
+             * If no limit provided it'll fetch 20 by default 
+             */
             if(!_limit){
                 lim = 20
             } else {
+                /**
+                 * If limit provided it'll fetch the provided limit of data 
+                 */
                 lim = _limit
             }
             this.db.collection("Invoice").find({
@@ -226,6 +377,9 @@ export class Database {
 	        }).catch(reject)
         })
     }
+    /**
+     * Get a single invoice by provided id 
+     */
     async GetInvoiceByID(_id: string): Promise<Invoice | null> {
         return new Promise ((resolve: (_inv: Invoice | null) => void, reject: (err: any) => void) => {
             if(!_id){
@@ -245,6 +399,9 @@ export class Database {
 	        }).catch(reject)
         })
     }
+    /**
+     * Get all invoices that are not completed 
+     */
     async GetIncompleteInvoices(_uID: Snowflake): Promise< Invoice[] | any[] > {
         return new Promise ((resolve: (_inv: Invoice[] | any[]) => void, reject: (err: any) => void) => {
             if(!_uID){
@@ -263,6 +420,9 @@ export class Database {
 	        }).catch(reject)
         })
     }
+    /**
+     * Create a new invoice 
+     */
     async CreateNewInvoice(_invoice: Invoice): Promise<Invoice> {
         return new Promise ((resolve: (_inv: Invoice) => void, reject: (err: any) => void) => {
             if(!_invoice){
@@ -276,6 +436,9 @@ export class Database {
             }).catch(reject)
         })
     }
+    /**
+     * Update an invoice data 
+     */
     async UpdateInvoice(_id: Snowflake, _update: any): Promise<void> {
         return new Promise ((resolve: () => void, reject: (err: any) => void) => {
             if(!_id){

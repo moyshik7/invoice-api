@@ -57,11 +57,6 @@ export interface Invoice {
      */
     completed: boolean;
     /**
-     * How much have been paid 
-     * @default 0
-     */
-    paid: number;
-    /**
      * If the payment is completed then the time
      */
     completedOn ?: TimeInteger;
