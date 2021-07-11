@@ -13,9 +13,18 @@ import md5 from 'md5'
 import { DB_URL, DB_NAME, PORT } from './settings'
 import { Database } from './res/db'
 
+
+/**
+ * Importing routes 
+ */
+import { Login } from './routes/login'
+
+
 const app = new express()
 /**
- * Using cors for foreign requests 
+ * Using cors 
+ * Otherwise it won't be able to receive foreign requests 
+ * with window.fetch() on browser 
  */
 app.use(cors())
 /**
@@ -27,6 +36,10 @@ app.all('/', (req ?: Request, res ?: Response): void => {
     res.send(`Nothing to see here`)
 })
 
+/**
+ * Settings routes 
+ */
+app.use('/login', Login)
 
 Database.connect(DB_URL, DB_NAME).then((db: Database): void => {
     app.listen(PORT, (): void => {

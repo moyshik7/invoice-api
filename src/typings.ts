@@ -89,6 +89,11 @@ export interface User {
    */
   username: string;
   /**
+   * The email of the user 
+   * unique 
+   */
+  email: string;
+  /**
    * Actual name of user
    */
   name: string;

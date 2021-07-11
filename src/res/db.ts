@@ -1,4 +1,12 @@
+/**
+ * Import types 
+ */
 import { Db } from 'mongodb'
+import { Invoice, Snowflake, TimeInteger, Tokens, User } from './../typings'
+
+/**
+ * Import modules 
+ */
 import { MongoClient } from 'mongodb'
 
 /**
@@ -51,4 +59,38 @@ export class Database {
             .catch(reject)
         })
     }
+    static async GetUserByID(_uID: Snowflake): Promise<User | null> {
+        //
+    }
+    static async GetUserByUsername(_uName: string): Promise<User | null> {
+        //
+    }
+    static async GetUserByEmail(_email: string): Promise<User | null> {
+        //
+    }
+    static async CreateNewUser(_userData: User): Promise<User> {
+        //
+    }
+    static async GetUserByToken(_token: string): Promise<Snowflake | null> {
+        //
+    }
+    static async CreateNewToken(_uID: Snowflake, _token: string, _expires?: TimeInteger): Promise<Tokens> {
+        //
+    }
+    static async GetInvoiceByUser(_uID: Snowflake): Promise<Invoice[] | any[]> {
+        //
+    }
+    static async GetInvoiceByID(_id: string): Promise<Invoice | null> {
+        //
+    }
+    static async GetIncompleteInvoices(_uID): Promise< Invoice[] | any[] > {
+        //
+    }
+    static async CreateNewInvoice(_invoice: Invoice): Promise<Invoice> {
+        //
+    }
+    static async UpdateInvoice(_id: Snowflake, _update: any): Promise<void> {
+        //
+    }
+    
 }
