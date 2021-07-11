@@ -16,11 +16,12 @@ import { MongoClient } from 'mongodb'
  * It'll create a new instance of the original class and return it 
  */
 export class Database {
-    private readonly _dbName: string;
-    private readonly _db: Db;
-    constructor(__db: Db, __dbName: string){
-        this._db = __db
-        this._dbName = __dbName;
+    private dbName: string;
+    private db: Db;
+    
+    constructor(_db: Db, _dbName: string){
+        this.db = _db
+        this.dbName = _dbName;
     }
     /** 
      * This'll create a new instance of Database class and return it. 
@@ -47,7 +48,8 @@ export class Database {
                 /** 
                  * If connection is successful it'll create a new Database() 
                  */
-                const _databaseObject = new Database(_database, __dbName)
+                const _db = _database.db(__dbName)
+                const _databaseObject = new Database(_db, __dbName)
                 /**
                  * Resolving the object 
                  */
@@ -59,20 +61,85 @@ export class Database {
             .catch(reject)
         })
     }
-    static async GetUserByID(_uID: Snowflake): Promise<User | null> {
-        //
+    async GetUserByID(_id: Snowflake): Promise<User | null> {
+        return new Promise ((resolve: (_user: User | null) => void, reject: (err: any) => void) => {
+            if(!_id){
+                reject("Provide a valid User ID");
+            }
+            this.db.collection("Users").find({
+                id: _id
+            }, {
+                projection: {
+                    _id: 0
+		    }})
+            .sort({ id: 1 })
+            .toArray()
+		    .then((res: Array<User>): void => {
+		        resolve(res[0])
+	        }).catch(reject)
+        })
     }
+    
     static async GetUserByUsername(_uName: string): Promise<User | null> {
-        //
+        return new Promise ((resolve: (_user: User | null) => void, reject: (err: any) => void) => {
+            if(!_uName){
+                reject("Provide a valid Username");
+            }
+            this.db.collection("Users").find({
+                username: _uName
+            }, {
+                projection: {
+                    _id: 0
+		    }})
+            .sort({ username: 1 })
+            .toArray()
+		    .then((res: Array<User>): void => {
+		        resolve(res[0])
+	        }).catch(reject)
+        })
     }
     static async GetUserByEmail(_email: string): Promise<User | null> {
-        //
+        return new Promise ((resolve: (_user: User | null) => void, reject: (err: any) => void) => {
+            if(!_email){
+                reject("Provide a valid Email");
+            }
+            this.db.collection("Users").find({
+                email: _email
+            }, {
+                projection: {
+                    _id: 0
+		    }})
+            .sort({ email: 1 })
+            .toArray()
+		    .then((res: Array<User>): void => {
+		        resolve(res[0])
+	        }).catch(reject)
+        })
     }
     static async CreateNewUser(_userData: User): Promise<User> {
         //
     }
     static async GetUserByToken(_token: string): Promise<Snowflake | null> {
-        //
+        return new Promise ((resolve: (_user: Snowflake | null) => void, reject: (err: any) => void) => {
+            if(!_token){
+                reject("Provide a valid token");
+            }
+            this.db.collection("Tokens").find({
+                token: _token
+            }, {
+                projection: {
+                    _id: 0
+		    }})
+            .sort({ token: 1 })
+            .toArray()
+		    .then((res: Array<Tokens>): void => {
+		        if(!res[0]){
+		            resolve(null)
+		        } else {
+		            resolve(res[0].user)
+		        }
+	        }).catch(reject)
+        })
     }
     static async CreateNewToken(_uID: Snowflake, _token: string, _expires?: TimeInteger): Promise<Tokens> {
         //
@@ -92,5 +159,4 @@ export class Database {
     static async UpdateInvoice(_id: Snowflake, _update: any): Promise<void> {
         //
     }
-    
 }
