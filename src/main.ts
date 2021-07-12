@@ -8,7 +8,6 @@ import { Request, Response } from 'express'
  */
 import express from 'express'
 import cors from 'cors'
-import md5 from 'md5'
 
 import { DB_URL, DB_NAME, PORT } from './settings'
 import { Database } from './res/db'
@@ -36,12 +35,18 @@ app.all('/', (req ?: Request, res ?: Response): void => {
     res.send(`Nothing to see here`)
 })
 
-/**
- * Settings routes 
- */
-app.use('/login', Login)
 
 Database.connect(DB_URL, DB_NAME).then((db: Database): void => {
+    /**
+     * Settings Database variables so that we can get them within the routes 
+     */
+    app.set('db', db)
+    
+    /**
+     * Settings routes 
+     */
+    app.use('/login', Login)
+
     app.listen(PORT, (): void => {
         console.log(`App running on port ${PORT}`)
     })

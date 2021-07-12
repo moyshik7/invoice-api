@@ -96,7 +96,7 @@ export interface User {
    * Roles of the user
    * array of role IDs
    */
-  roles: Array<Snowflake>;
+  roles?: Array<Snowflake>;
   /**
    * When the user joined
    */
