@@ -10,19 +10,19 @@ export const Login = (app: any, db: Database) => {
         /**
          * Error 400: Bad request 
          */
-        if(!req.user){ return res.status(400).json({ code: 400, error: "Provide a valid user" }) }
-        if(!req.user.username && !req.user.email){ return res.status(400).json({ code: 400, error: "Provide a valid username or email" }) }
-        if(!req.user.password){ return res.status(400).json({ code: 400, error: "Provide a valid password" }) }
+        if(!req.body.user){ return res.status(400).json({ code: 400, error: "Provide a valid user" }) }
+        if(!req.body.user.username && !req.body.user.email){ return res.status(400).json({ code: 400, error: "Provide a valid username or email" }) }
+        if(!req.body.user.password){ return res.status(400).json({ code: 400, error: "Provide a valid password" }) }
         let user: User | null
-        if(req.user.username.length){
-            user = await db.GetUserByUsername(req.user.username)
+        if(req.body.user.username.length){
+            user = await db.GetUserByUsername(req.body.user.username)
         } else {
-            user = await db.GetUserByEmail(req.user.email)
+            user = await db.GetUserByEmail(req.body.user.email)
         }
         if(!user){
             return res.status(403).json({ code: 403, error: "Wrong username and/or password" })
         }
-        const userpass = Password(user.username, req.user.password)
+        const userpass = Password(user.username, req.body.user.password)
         if(userpass !== user.password){
             return res.status(403).json({ code: 403, error: "Wrong username and/or password" })
         } else {

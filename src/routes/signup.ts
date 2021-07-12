@@ -10,24 +10,24 @@ export const Signup = (app: any, db: Database) => {
         /**
          * Error 400: Bad request 
          */
-        if(!req.user){ return res.status(400).json({ code: 400, error: "Provide a valid user" }) }
-        if(!req.user.username){ return res.status(400).json({ code: 400, error: "Provide a valid username" }) }
-        if(!req.user.email){ return res.status(400).json({ code: 400, error: "Provide a valid email" }) }
-        if(!req.user.name){ return res.status(400).json({ code: 400, error: "Provide a valid name" }) }
-        if(!req.user.password){ return res.status(400).json({ code: 400, error: "Provide a valid password" }) }
+        if(!req.body.user){ return res.status(400).json({ code: 400, error: "Provide a valid user" }) }
+        if(!req.body.user.username){ return res.status(400).json({ code: 400, error: "Provide a valid username" }) }
+        if(!req.body.user.email){ return res.status(400).json({ code: 400, error: "Provide a valid email" }) }
+        if(!req.body.user.name){ return res.status(400).json({ code: 400, error: "Provide a valid name" }) }
+        if(!req.body.user.password){ return res.status(400).json({ code: 400, error: "Provide a valid password" }) }
 
-        db.GetUserByUsernameOrEmail(req.user.username, req.user.email).then((res_u: User | null): void => {
+        db.GetUserByUsernameOrEmail(req.body.user.username, req.body.user.email).then((res_u: User | null): void => {
             if(res_u){
                 return res.status(409).json({ code: 409, error: "username or email already exists" })
             }
             const user: User = {
-                id: RandomUserID(req.user.username),
-                username: req.user.username,
-                email: req.user.email,
-                name: req.user.name,
+                id: RandomUserID(req.body.user.username),
+                username: req.body.user.username,
+                email: req.body.user.email,
+                name: req.body.user.name,
                 joined: Date.now(),
                 admin: false,
-                password: Password(req.user.username, req.user.password)
+                password: Password(req.body.user.username, req.body.user.password)
             }
             db.CreateNewUser(user).then((res_user: User): void => {
                 if(!res_user){
