@@ -18,7 +18,7 @@ import { Database } from './res/db'
  */
 import { Login } from './routes/login'
 import { Signup } from './routes/signup'
-
+import { Me } from './routes/me'
 
 const app = new express()
 /**
@@ -43,6 +43,7 @@ Database.connect(DB_URL, DB_NAME).then((db: Database): void => {
      */
     Login(app, db)
     Signup(app, db)
+    Me(app, db)
 
     app.listen(PORT, (): void => {
         console.log(`App running on port ${PORT}`)
