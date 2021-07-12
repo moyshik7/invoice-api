@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { Tokens, User, Snowflake } from './../typings'
+import { User, Snowflake } from './../typings'
 import { Database } from './../res/db'
 
 export const Login = (app: any, db: Database) => {
