@@ -11,8 +11,15 @@ export const Signup = (app: any, db: Database) => {
             /**
              * Error 406: Not acceptable 
              */
-            res.status(406).json({ code: 406, error: "Provide a valid user"})
+            return res.status(406).json({ code: 406, error: "Provide a valid user"})
         }
+        if(!req.user.username){
+            //
+        }
+        db.GetUserByUsername(req.user.username).then((res_u1: User | null): void => {
+            if(!res_u1){
+                return res.status(409).json({ code: 409, error: "username already exists" })
+            }
         const user: User = {
             id: RandomUserID(req.user.username),
             username: req.user.username,
@@ -22,7 +29,7 @@ export const Signup = (app: any, db: Database) => {
             admin: false,
             password: Password(req.user.username, req.user.password)
         }
-        db.CreateNewUser(user).then((res: User) => {
+        db.CreateNewUser(user).then((res: User): void => {
             if(!res){
                 /**
                  * Error 500: Internal server error 

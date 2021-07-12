@@ -89,16 +89,16 @@ export class Database {
                  * If there's no id then stop the promise
                  */
                 if (!_id) {
-                    reject("Provide a valid user id");
+                    return reject("Provide a valid user id");
                 }
                 /**
                  * If no _update then stop the function
                  */
                 if (!_update) {
-                    reject("Provide what to edit / change");
+                    return reject("Provide what to edit / change");
                 }
                 if (_update.id || _update.username) {
-                    reject("Can't change the username or id");
+                    return reject("Can't change the username or id");
                 }
                 /**
                  * Updating the user based on query
@@ -145,7 +145,7 @@ export class Database {
                  * If no id provided then stop the execution
                  */
                 if (!_id) {
-                    reject("Provide a valid User ID");
+                    return reject("Provide a valid User ID");
                 }
                 /**
                  * Select collection Users and run the query
@@ -204,7 +204,7 @@ export class Database {
                  * If no username provided then stop the execution
                  */
                 if (!_uName) {
-                    reject("Provide a valid Username");
+                    return reject("Provide a valid Username");
                 }
                 /**
                  * Select the collection and run the find query
@@ -275,7 +275,7 @@ export class Database {
                 reject: (err: any) => void
             ) => {
                 if (!_email) {
-                    reject("Provide a valid Email");
+                    return reject("Provide a valid Email");
                 }
                 this.db
                     .collection("Users")
@@ -300,16 +300,85 @@ export class Database {
         );
     }
     /**
+     * Get user by username or email 
+     * If any one of them matches the criteria return the user 
+     */
+     async GetUserByUsernameOrEmail(_uName: string, _email): Promise<User | null> {
+        return new Promise(
+            (
+                resolve: (_user: User | null) => void,
+                reject: (err: any) => void
+            ) => {
+                /**
+                 * If no username provided then stop the execution
+                 */
+                if (!_uName) {
+                    return reject("Provide a valid Username");
+                }
+                /**
+                 * if no email then stop the execution 
+                 */
+                 if(!_email){
+                     return reject("Provide a valid email")
+                 }
+                /**
+                 * Select the collection and run the find query
+                 */
+                this.db
+                    .collection("Users")
+                    .find(
+                        {
+                            $or: [{
+                                username: _uName
+                            }, {
+                                email: _email
+                            }]
+                        },
+                        {
+                            /**
+                             * We don't need the _id thing
+                             */
+                            projection: {
+                                _id: 0,
+                            },
+                        }
+                    )
+                    .sort({ username: 1 })
+                    /**
+                     * We only want one document
+                     */
+                    .limit(1)
+                    /**
+                     * Converting to an array
+                     */
+                    .toArray()
+                    /**
+                     * It should return an array of Users
+                     */
+                    .then((res: Array<User>): void => {
+                        /**
+                         * Resolve the result
+                         */
+                        resolve(res[0]);
+                    })
+                    /**
+                     * In case any error occurred
+                     */
+                    .catch(reject);
+            }
+        );
+    }
+    /**
      * Register new user
      */
     async CreateNewUser(_userData: User): Promise<User> {
         return new Promise(
             (resolve: (_inv: User) => void, reject: (err: any) => void) => {
                 if (!_userData) {
-                    reject("Provide a valid user data");
+                    return return reject("Provide a valid user data");
                 }
                 if (!_userData.id) {
-                    reject("Provide a valid user ID");
+                    return return reject("Provide a valid user ID");
                 }
                 this.db
                     .collection("Users")
@@ -331,7 +400,7 @@ export class Database {
                 reject: (err: any) => void
             ) => {
                 if (!_token) {
-                    reject("Provide a valid token");
+                    return return reject("Provide a valid token");
                 }
                 this.db
                     .collection("Tokens")
@@ -371,10 +440,10 @@ export class Database {
         return new Promise(
             (resolve: (_inv: Tokens) => void, reject: (err: any) => void) => {
                 if (!_uID) {
-                    reject("Provide a valid user ID");
+                    return reject("Provide a valid user ID");
                 }
                 if (!_token) {
-                    reject("Provide a valid token");
+                    return reject("Provide a valid token");
                 }
                 let _exp: TimeInteger;
                 /**
@@ -430,7 +499,7 @@ export class Database {
                 reject: (err: any) => void
             ) => {
                 if (!_uID) {
-                    reject("Provide a valid user ID");
+                    return reject("Provide a valid user ID");
                 }
                 let lim: number;
                 /**
@@ -476,7 +545,7 @@ export class Database {
                 reject: (err: any) => void
             ) => {
                 if (!_id) {
-                    reject("Provide a valid Invoice ID");
+                    return reject("Provide a valid Invoice ID");
                 }
                 this.db
                     .collection("Invoice")
@@ -510,7 +579,7 @@ export class Database {
                 reject: (err: any) => void
             ) => {
                 if (!_uID) {
-                    reject("Provide a valid user ID");
+                    return reject("Provide a valid user ID");
                 }
                 this.db
                     .collection("Invoice")
@@ -540,10 +609,10 @@ export class Database {
         return new Promise(
             (resolve: (_inv: Invoice) => void, reject: (err: any) => void) => {
                 if (!_invoice) {
-                    reject("Provide a valid invoice");
+                    return reject("Provide a valid invoice");
                 }
                 if (!_invoice.id) {
-                    reject("Provide a valid invoice id");
+                    return reject("Provide a valid invoice id");
                 }
                 this.db
                     .collection("Invoice")
@@ -562,16 +631,16 @@ export class Database {
         return new Promise(
             (resolve: () => void, reject: (err: any) => void) => {
                 if (!_id) {
-                    reject("Provide a valid invoice id");
+                    return reject("Provide a valid invoice id");
                 }
                 if (!_update) {
-                    reject("Provide what to edit / change");
+                    return reject("Provide what to edit / change");
                 }
                 /**
                  * Don't change the id 
                  */
                 if(_update.id){
-                    reject("Can't change the id");
+                    return reject("Can't change the id");
                 }
                 this.db
                     .collection("Invoice")
