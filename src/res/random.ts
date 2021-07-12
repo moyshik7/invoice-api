@@ -9,3 +9,6 @@ export const RandomUserID = (username: string): Snowflake => {
         return md5(username)
     }
 }
+export const RandomAuthToken = (_uname: string, _uid: Snowflake): string => {
+    return `${md5(_uid)}.${md5(Date.now())}${md5(_uname)}`
+}
