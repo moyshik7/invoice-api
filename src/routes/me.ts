@@ -2,9 +2,6 @@ import { Request, Response } from 'express'
 import { Tokens, User, Snowflake } from './../typings'
 import { Database } from './../res/db'
 
-import { RandomAuthToken } from './../res/random'
-import { Password } from './../res/password'
-
 export const Login = (app: any, db: Database) => {
     app.get('/me', (req: Request, res: Response): void => {
         /**
