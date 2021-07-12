@@ -375,10 +375,10 @@ export class Database {
         return new Promise(
             (resolve: (_inv: User) => void, reject: (err: any) => void) => {
                 if (!_userData) {
-                    return return reject("Provide a valid user data");
+                    return reject("Provide a valid user data");
                 }
                 if (!_userData.id) {
-                    return return reject("Provide a valid user ID");
+                    return reject("Provide a valid user ID");
                 }
                 this.db
                     .collection("Users")
@@ -400,7 +400,7 @@ export class Database {
                 reject: (err: any) => void
             ) => {
                 if (!_token) {
-                    return return reject("Provide a valid token");
+                    return reject("Provide a valid token");
                 }
                 this.db
                     .collection("Tokens")
