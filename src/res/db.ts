@@ -567,6 +567,12 @@ export class Database {
                 if (!_update) {
                     reject("Provide what to edit / change");
                 }
+                /**
+                 * Don't change the id 
+                 */
+                if(_update.id){
+                    reject("Can't change the id");
+                }
                 this.db
                     .collection("Invoice")
                     .updateOne(
