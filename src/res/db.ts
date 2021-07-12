@@ -573,26 +573,28 @@ export class Database {
      * Get all invoices that are not completed
      */
     async GetIncompleteInvoices(_uID: Snowflake): Promise<Invoice[] | any[]> {
-        return new Promise(
-            (
-                resolve: (_inv: Invoice[] | any[]) => void,
-                reject: (err: any) => void
-            ) => {
-                if (!_uID) {
-                    return reject("Provide a valid user ID");
-                }
-                this.db
-                    .collection("Invoice")
-                    .find(
-                        {
-                            user: _uID,
-                        },
-                        {
-                            projection: {
-                                _id: 0,
-                            },
-                        }
-                    )
+        return new Promise((resolve: (_inv: Invoice[] | any[]) => void, reject: (err: any) => void ) => {
+            if (!_uID) {
+                return reject("Provide a valid user ID");
+            }
+            this.db
+                .collection("Invoice")
+                .find({
+                    /**
+                     * Where id == userid and is not complete 
+                     */
+                    $and: [
+                            {
+                                id: _uID
+                            }, {
+                                stats : { completed: false }
+                            }
+                        ]
+                    }, {
+                        projection: {
+                            _id: 0,
+                    },
+                })
                     .sort({ id: 1 })
                     .toArray()
                     .then((res: Array<Invoice>): void => {
