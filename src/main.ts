@@ -16,7 +16,7 @@ import { Database } from './res/db'
 /**
  * Importing routes 
  */
-import { Login } from './routes/login'
+import { Signup } from './routes/signup'
 
 
 const app = new express()
@@ -38,14 +38,9 @@ app.all('/', (req ?: Request, res ?: Response): void => {
 
 Database.connect(DB_URL, DB_NAME).then((db: Database): void => {
     /**
-     * Settings Database variables so that we can get them within the routes 
-     */
-    app.set('db', db)
-    
-    /**
      * Settings routes 
      */
-    app.use('/login', Login)
+    Signup(app, db)
 
     app.listen(PORT, (): void => {
         console.log(`App running on port ${PORT}`)
