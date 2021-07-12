@@ -5,7 +5,7 @@ import { Database } from './../res/db'
 import { RandomUserID } from './../res/random'
 import { Password } from './../res/password'
 
-export const Signup = (app: any, db: Database) => {
+export const Signup = (app: any, db: Database): void => {
     app.post('/signup', (req: Request, res: Response): void => {
         /**
          * Error 400: Bad request 

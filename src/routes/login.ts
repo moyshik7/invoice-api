@@ -5,7 +5,7 @@ import { Database } from './../res/db'
 import { RandomAuthToken } from './../res/random'
 import { Password } from './../res/password'
 
-export const Login = (app: any, db: Database) => {
+export const Login = (app: any, db: Database): void => {
     app.post('/login', async (req: Request, res: Response): Promise<void> => {
         /**
          * Error 400: Bad request 
