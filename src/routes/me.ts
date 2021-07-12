@@ -9,7 +9,7 @@ export const Me = (app: any, db: Database): void => {
          */
         if(!req.headers.authorization) { return res.status(403).json({ code: 403, error: "No auth token or invalid auth token" }) }
         db.GetUserByToken(req.headers.authorization).then((_u: Snowflake | null): void => {
-            if(!_u){ return res.status(403).json({ code: 403, error: "Unauthorized" }) }
+            if(!_u){ return res.status(403).json({ code: 403, error: "No auth token or invalid auth token" }) }
             db.GetUserByID(_u).then((_user: User | null) => {
                 /**
                  * Now there's possibly no chance of the user returning null 

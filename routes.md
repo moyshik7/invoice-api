@@ -3,7 +3,7 @@
 - `/(root)`
   - `/login` (POST)
   - `/signup` (POST)
-  - `/user` (GET, POST)
+  - `/user` (GET)
   - `/invoice` (GET, POST)
   - `/invoice/:id:` (GET, POST, DELETE)
   - `/assign` (POST, DELETE)
