@@ -16,6 +16,7 @@ import { Database } from './res/db'
 /**
  * Importing routes 
  */
+import { Login } from './routes/login'
 import { Signup } from './routes/signup'
 
 
@@ -40,6 +41,7 @@ Database.connect(DB_URL, DB_NAME).then((db: Database): void => {
     /**
      * Settings routes 
      */
+    Login(app, db)
     Signup(app, db)
 
     app.listen(PORT, (): void => {
