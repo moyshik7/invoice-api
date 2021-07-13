@@ -566,6 +566,30 @@ export class Database {
         );
     }
     /**
+     * Delete an invoice by id 
+     */
+     async DeleteInvoiceByID(_id: string): Promise<void> {
+        return new Promise(
+            (
+                resolve: (_inv: void) => void,
+                reject: (err: any) => void
+            ) => {
+                if (!_id) {
+                    return reject("Provide a valid Invoice ID");
+                }
+                this.db
+                    .collection("Invoice")
+                    .deleteOne({
+                        id: _id
+                })
+                .then((): void => {
+                    resolve();
+                })
+                .catch(reject);
+            }
+        );
+    }
+    /**
      * Get all invoices that are not completed
      */
     async GetIncompleteInvoices(_uID: Snowflake): Promise<Invoice[] | any[]> {
