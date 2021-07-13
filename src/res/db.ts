@@ -432,11 +432,7 @@ export class Database {
      * Create a new token
      * Basically when someone signs up for the first time
      */
-    async CreateNewToken(
-        _uID: Snowflake,
-        _token: string,
-        _expires?: TimeInteger
-    ): Promise<Tokens> {
+    async CreateNewToken(_uID: Snowflake, _token: string, _expires?: TimeInteger ): Promise<Tokens> {
         return new Promise(
             (resolve: (_inv: Tokens) => void, reject: (err: any) => void) => {
                 if (!_uID) {
