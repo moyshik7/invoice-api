@@ -63,9 +63,9 @@ export const Invoice_id = (app: any, db: Database): void => {
                 /**
                  * In case something goes wrong 
                  */
-                .catch((err: any): void => {
+                .catch((err: any): void => {  // eslint-disable-line @typescript-eslint/no-unused-vars
                     return res.status(500).json({ code: 500, error: "Something Went Wrong on our side" })
-                }
+                })
             })
             /**
              * In case something goes wrong 
