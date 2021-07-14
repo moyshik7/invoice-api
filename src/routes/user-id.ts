@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { User, Snowflake } from './../typings'
 import { Database } from './../res/db'
 
-export const Me = (app: any, db: Database): void => {
+export const User_id = (app: any, db: Database): void => {
     app.get('/user/:id', (req: Request, res: Response): void => {
         /**
          * Error 400: Bad request 
