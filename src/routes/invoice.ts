@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { Invoice, Snowflake } from './../typings'
 import { Database } from './../res/db'
 
-export const Invoice = (app: any, db: Database): void => {
+export const Invoice_r = (app: any, db: Database): void => {
     app.get('/invoice', (req: Request, res: Response): void => {
         /**
          * Error 400: Bad request 
