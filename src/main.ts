@@ -21,6 +21,7 @@ import { Signup } from './routes/signup'
 import { Me } from './routes/me'
 import { Me_due } from './routes/me-due'
 import { Me_pings } from './routes/me-pings'
+import { Invoice_r } from './routes/invoice'
 import { Invoice_id } from './routes/invoice_id'
 import { User_id } from './routes/user-id'
 
@@ -50,6 +51,7 @@ Database.connect(DB_URL, DB_NAME).then((db: Database): void => {
     Me(app, db)
     Me_due(app, db)
     Me_pings(app, db)
+    Invoice_r(app, db)
     Invoice_id(app, db)
     User_id(app, db)
 
