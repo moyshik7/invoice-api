@@ -12,10 +12,10 @@ export const RandomUserID = (username: string): Snowflake => {
 export const RandomAuthToken = (_uname: string, _uid: Snowflake): string => {
     return `${md5(_uid)}.${md5(Date.now())}${md5(_uname)}`
 }
-export const RandomInvoiceID = (username: string): Snowflake => {
-    if(!username || !username.length){
+export const RandomInvoiceID = (_user: Snowflake, _invName: string): Snowflake => {
+    if(!_user || !_user.length || !_invName || !_invName.length){
         return ""
     } else {
-        return md5(username)
+        return md5(`${_user}${Date.now()}${_invName}`)
     }
 }
