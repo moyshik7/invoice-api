@@ -485,49 +485,35 @@ export class Database {
     /**
      * Get all invoices of a user
      */
-    async GetInvoiceByUser(
-        _uID: Snowflake,
-        _limit?: number
-    ): Promise<Invoice[] | any[]> {
-        return new Promise(
-            (
-                resolve: (_inv: Invoice[] | any[]) => void,
-                reject: (err: any) => void
-            ) => {
-                if (!_uID) {
-                    return reject("Provide a valid user ID");
-                }
-                let lim: number;
+    async GetInvoiceByUser(_uID: Snowflake, _limit?: number ): Promise<Invoice[] | any[]> {
+        return new Promise((resolve: (_inv: Invoice[] | any[]) => void, reject: (err: any) => void ) => {
+            if (!_uID) {
+                return reject("Provide a valid user ID");
+            }
+            let lim: number;
+            /**
+             * If no limit provided it'll fetch 20 by default
+             */
+            if (!_limit) {
+                lim = 20;
+            } else {
                 /**
-                 * If no limit provided it'll fetch 20 by default
+                 * If limit provided it'll fetch the provided limit of data
                  */
-                if (!_limit) {
-                    lim = 20;
-                } else {
-                    /**
-                     * If limit provided it'll fetch the provided limit of data
-                     */
-                    lim = _limit;
-                }
-                this.db
-                    .collection("Invoice")
-                    .find(
-                        {
-                            user: _uID,
-                        },
-                        {
-                            projection: {
-                                _id: 0,
-                            },
-                        }
-                    )
-                    .sort({ id: 1 })
-                    .limit(lim)
-                    .toArray()
-                    .then((res: Array<Invoice>): void => {
-                        resolve(res);
-                    })
-                    .catch(reject);
+                lim = _limit;
+            }
+            this.db.collection("Invoice").find({
+                    user: _uID,
+                }, {
+                    projection: { _id: 0 }
+                })
+                .sort({ id: 1 })
+                .limit(lim)
+                .toArray()
+                .then((res: Array<Invoice>): void => {
+                    resolve(res);
+                })
+                .catch(reject);
             }
         );
     }
