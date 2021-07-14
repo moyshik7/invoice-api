@@ -681,4 +681,39 @@ export class Database {
             }
         );
     }
+    async GetOutdatedInvoices(_uID: Snowflake): Promise<Invoice[] | any[]> {
+        return new Promise((resolve: (_inv: Invoice[] | any[]) => void, reject: (err: any) => void ) => {
+            if (!_uID) {
+                return reject("Provide a valid user ID");
+            }
+            this.db
+                .collection("Invoice")
+                .find({
+                    /**
+                     * Where id == userid and is not complete 
+                     * And due date is less than current date
+                     */
+                    $and: [
+                            {
+                                id: _uID
+                            }, {
+                                stats : { completed: false }
+                            }, {
+                                due: { $lt: Date.now() }
+                            }
+                        ]
+                    }, {
+                        projection: {
+                            _id: 0,
+                    },
+                })
+                    .sort({ id: 1 })
+                    .toArray()
+                    .then((res: Array<Invoice>): void => {
+                        resolve(res);
+                    })
+                    .catch(reject);
+            }
+        );
+    }
 }
