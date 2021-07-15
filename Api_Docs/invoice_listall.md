@@ -1,5 +1,4 @@
-# List all invoices of a user 
-  
+# List all invoices of a user
 `/invoice` (GET)  
   
   
