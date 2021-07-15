@@ -96,16 +96,6 @@ export const Invoice_id = (app: any, db: Database): void => {
         if(!req.headers.authorization) { return res.status(403).json({ code: 403, error: "No auth token or invalid auth token" }) }
         if(!req.body.invoice || req.body.invoice == {}){ return res.status(400).json({ code: 400, error: "provide a valid Invoice to update" }) }
         if(!req.params.id){ return res.status(400).json({ code: 400, error: "Provide a valid id" }) }
-        /*if(!req.body.invoice.title){ return res.status(400).json({ code: 400, error: "provide a valid Invoice title" }) }
-        if(!req.body.invoice.description){ return res.status(400).json({ code: 400, error: "provide a valid Invoice description" }) }
-        if(!req.body.invoice.payTo){ return res.status(400).json({ code: 400, error: "provide a valid name to pay" }) }
-        if(!req.body.invoice.due){ return res.status(400).json({ code: 400, error: "provide a valid due time (Time Integer)" }) }
-        if(!req.body.invoice.total){ return res.status(400).json({ code: 400, error: "provide a total amount" }) }
-        */
-        /*
-        if(typeof(req.body.invoice.due) !== 'number'){ return res.status(400).json({ code: 400, error: "Provide a valid due time for payment (Time Integer)" }) }
-        if(typeof(req.body.invoice.total) !== 'number'){ return res.status(400).json({ code: 400, error: "Provide a valid amount for payment" }) }
-        */
         db.GetUserByToken(req.headers.authorization).then(async (_u: Snowflake | null): Promise<void> => {
             if(!_u){ return res.status(403).json({ code: 403, error: "No auth token or invalid auth token" }) }
             const old_inv: Invoice | null = await db.GetInvoiceByID(req.params.id)
