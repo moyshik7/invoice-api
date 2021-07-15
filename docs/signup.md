@@ -20,3 +20,15 @@ content-type: application/json
   }
 }
 ```
+
+## On success
+
+  
+It'll return a object with response code 200  
+
+```json
+{
+    "code": 200,
+    "message": "New user created"
+}
+```
