@@ -8,7 +8,7 @@ Send a GET request to `/invoice/:id` (replace `:id` with the invoice id`)
 **(You can only see your own invoices)**  
   
   
-# On success
+## On success
   
 It'll return an JSON encoded invoice object like below  
 
