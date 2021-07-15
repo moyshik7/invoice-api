@@ -67,11 +67,11 @@ export const Invoice_r = (app: any, db: Database): void => {
                     completed: false
                 }
             }
-            db.CreateNewInvoice(_invoice).then((_inv: Invoice) => {
+            db.CreateNewInvoice(_invoice).then((_inv: Invoice) => { // eslint-disable-line @typescript-eslint/no-unused-vars
                 /**
                  * If everything goes well we'll return the invoices
                  */
-                return res.status(200).json({ code: 200, invoice: _inv })
+                return res.status(200).json({ code: 200, invoice: _invoice })
             })
             /**
              * In case something goes wrong 
