@@ -109,7 +109,7 @@ export const Invoice_id = (app: any, db: Database): void => {
             if(req.body.invoice.due && req.body.invoice.due !== old_inv.due){ update.due = req.body.invoice.due }
             if(req.body.invoice.total && req.body.invoice.total !== old_inv.total){ update.total = req.body.invoice.total }
             
-            if(!update || update == {}){ return res.status(200).json({ code: 200, message: "Updated" }) }
+            if(JSON.stringify(update) == '{}'){ return res.status(200).json({ code: 200, message: "Updated" }) }
             db.UpdateInvoice(old_inv.id, update).then((): void => {
                 res.status(200).json({ code: 200, message: "Updated" })
             })
