@@ -88,4 +88,59 @@ export const Invoice_id = (app: any, db: Database): void => {
         })
         
     })
+    app.post('/invoice/:id', (req: Request, res: Response): void => {
+        /**
+         * Error 400: Bad request 
+         * Error 403: Access denied
+         */
+        if(!req.headers.authorization) { return res.status(403).json({ code: 403, error: "No auth token or invalid auth token" }) }
+        if(!req.body.invoice || req.body.invoice == {}){ return res.status(400).json({ code: 400, error: "provide a valid Invoice to update" }) }
+        if(!req.params.id){ return res.status(400).json({ code: 400, error: "Provide a valid id" }) }
+        /*if(!req.body.invoice.title){ return res.status(400).json({ code: 400, error: "provide a valid Invoice title" }) }
+        if(!req.body.invoice.description){ return res.status(400).json({ code: 400, error: "provide a valid Invoice description" }) }
+        if(!req.body.invoice.payTo){ return res.status(400).json({ code: 400, error: "provide a valid name to pay" }) }
+        if(!req.body.invoice.due){ return res.status(400).json({ code: 400, error: "provide a valid due time (Time Integer)" }) }
+        if(!req.body.invoice.total){ return res.status(400).json({ code: 400, error: "provide a total amount" }) }
+        */
+        /*
+        if(typeof(req.body.invoice.due) !== 'number'){ return res.status(400).json({ code: 400, error: "Provide a valid due time for payment (Time Integer)" }) }
+        if(typeof(req.body.invoice.total) !== 'number'){ return res.status(400).json({ code: 400, error: "Provide a valid amount for payment" }) }
+        */
+        db.GetUserByToken(req.headers.authorization).then(async (_u: Snowflake | null): Promise<void> => {
+            if(!_u){ return res.status(403).json({ code: 403, error: "No auth token or invalid auth token" }) }
+            const old_inv: Invoice | null = await db.GetInvoiceByID(req.params.id)
+            if(!old_inv){ return res.status(404).json({ code: 404, error: "This invoice is not found or might have been deleted" }) }
+            if(old_inv.user !== _u){ return res.status(403).json({ code: 403, error: "You don't own the invoice" }) }
+            
+            const update = {}
+            if(req.body.invoice.title && req.body.invoice.title !== old_inv.title){ update.title = req.body.invoice.title }
+            if(req.body.invoice.description && req.body.invoice.description !== old_inv.description){ update.description = req.body.invoice.description }
+            if(req.body.invoice.payTo && req.body.invoice.payTo !== old_inv.payTo){ update.payTo = req.body.invoice.payTo }
+            if(req.body.invoice.due && req.body.invoice.due !== old_inv.due){ update.due = req.body.invoice.due }
+            if(req.body.invoice.total && req.body.invoice.total !== old_inv.total){ update.total = req.body.invoice.total }
+            
+            if(!update || update == {}){ return res.status(200).json({ code: 200, message: "Updated" }) }
+            db.UpdateInvoice(old_inv.id, update).then((): void => {
+                res.status(200).json({ code: 200, message: "Updated" })
+            })
+            /**
+             * In case something goes wrong 
+             */
+            .catch((err: any):void => {  // eslint-disable-line @typescript-eslint/no-unused-vars
+                /**
+                 * Error 500: Internal server error 
+                 */
+                res.status(500).json({ code: 500, error: "Something Went Wrong on our side" })
+            })
+        })
+        /**
+         * If database fails or something like that 
+         */
+        .catch((err: any):void => {  // eslint-disable-line @typescript-eslint/no-unused-vars
+            /**
+             * Error 500: Internal server error 
+             */
+            res.status(500).json({ code: 500, error: "Something Went Wrong on our side" })
+        })
+    })
 }
