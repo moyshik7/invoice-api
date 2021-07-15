@@ -1,4 +1,6 @@
 # Create a new user
+`/signup` (POST)  
+  
   
 Send a POST request to `/signup` with these credentials 
   

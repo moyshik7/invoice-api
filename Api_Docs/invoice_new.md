@@ -1,5 +1,7 @@
 # Create new invoice
-
+`/invoice` (POST)  
+  
+  
 Send a POST request to `/invoice` with the below values  
 **(Authentication required)**  
 

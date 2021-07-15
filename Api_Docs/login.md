@@ -1,4 +1,6 @@
 # Log in as existing user
+`/login` (POST)  
+  
   
 Send a POST request to `/signup` with these credentials 
   

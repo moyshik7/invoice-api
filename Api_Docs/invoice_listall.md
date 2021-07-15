@@ -1,4 +1,6 @@
 # List all invoices of a user
+`/invoice` (GET)  
+  
   
 Send a GET request to `/invoice`    
 **(Authentication required)**
