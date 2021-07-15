@@ -6,7 +6,7 @@ Send a GET request to `/invoice`
 **(Authentication required)**
   
   
-# On success
+## On success
   
 It'll return a json string with an array of invoices  
   
