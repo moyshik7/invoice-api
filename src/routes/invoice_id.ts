@@ -112,7 +112,7 @@ export const Invoice_id = (app: any, db: Database): void => {
             if(!old_inv){ return res.status(404).json({ code: 404, error: "This invoice is not found or might have been deleted" }) }
             if(old_inv.user !== _u){ return res.status(403).json({ code: 403, error: "You don't own the invoice" }) }
             
-            const update = {}
+            const update: any = {}
             if(req.body.invoice.title && req.body.invoice.title !== old_inv.title){ update.title = req.body.invoice.title }
             if(req.body.invoice.description && req.body.invoice.description !== old_inv.description){ update.description = req.body.invoice.description }
             if(req.body.invoice.payTo && req.body.invoice.payTo !== old_inv.payTo){ update.payTo = req.body.invoice.payTo }
