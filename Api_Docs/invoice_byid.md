@@ -1,4 +1,5 @@
-# Get information about a certain invoice
+# Get information about a certain invoice 
+  
 `/invoice/:id` (GET)  
   
   
