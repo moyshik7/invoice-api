@@ -589,7 +589,7 @@ export class Database {
                     /**
                      * Where id == userid and is not complete 
                      */
-                        "id": _uID,
+                        "user": _uID,
                         "stats.completed": false
                     }, {
                         projection: {
@@ -674,7 +674,7 @@ export class Database {
                      * Where id == userid and is not complete 
                      * And due date is less than current date
                      */
-                        "id": _uID,
+                        "user": _uID,
                         "stats.completed": false,
                         "due": { $lt: Date.now() }
                     }, {
