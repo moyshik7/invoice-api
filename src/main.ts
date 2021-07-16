@@ -16,6 +16,7 @@ import { Database } from './res/db'
 /**
  * Importing routes 
  */
+import { Home } from './routes/home'
 import { Login } from './routes/login'
 import { Signup } from './routes/signup'
 import { Me } from './routes/me'
@@ -46,6 +47,7 @@ Database.connect(DB_URL, DB_NAME).then((db: Database): void => {
     /**
      * Settings routes 
      */
+    Home(app)
     Login(app, db)
     Signup(app, db)
     Me(app, db)
