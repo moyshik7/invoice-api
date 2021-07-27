@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import { User } from './../typings'
+import { User, Tokens } from './../typings'
 import { Database } from './../res/db'
 
-import { RandomUserID } from './../res/random'
+import { RandomAuthToken, RandomUserID } from './../res/random'
 import { Password } from './../res/password'
 
 export const Signup = (app: any, db: Database): void => {
@@ -36,7 +36,21 @@ export const Signup = (app: any, db: Database): void => {
                      */
                     res.status(500).json({ code: 500, error: "Something went wrong on our side"})
                 }
-                res.status(200).json({ code: 200, data: "New user created" })
+                const token = RandomAuthToken(user.username, user.id)
+                db.CreateNewToken(user.id, token).then((token_n: Tokens): void => {
+                    if(!token_n){
+                        /**
+                         * Error 500: Internal server error 
+                         */
+                        return res.status(500).json({ code: 500, error: "Something Went Wrong on our side" })
+                    }
+                    return res.status(200).json({ code: 200, token: token_n.token, expires: token_n.expires })
+                }).catch((err: any):void => {  // eslint-disable-line @typescript-eslint/no-unused-vars
+                    /**
+                     * Error 500: Internal server error 
+                     */
+                    res.status(500).json({ code: 500, error: "Something Went Wrong on our side" })
+                })
             }).catch((err: any) => { // eslint-disable-line @typescript-eslint/no-unused-vars
                 /**
                  * Error 500: Internal server error 
